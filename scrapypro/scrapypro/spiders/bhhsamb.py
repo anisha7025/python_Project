@@ -17,7 +17,7 @@ class BhhsambSpider(scrapy.Spider):
             yield scrapy.Request(self.start_urls[0] + url[8:], callback=self.parse_details)
 
 
-def parse_details(self, response):
+    def parse_details(self, response):
 
         divs = response.xpath("//div[@class='agent-details col-sm-24 kill-padding']")
 
@@ -25,18 +25,15 @@ def parse_details(self, response):
         job_title = divs.xpath("//div[@class='text-left medium-text mobile-text-center']/span[@class='big-text']/text()").get()
         image_url = divs.xpath("//img[@class='agent-photo']/@src").get()
         address = divs.xpath("//div[@class='row']/div[@class='text-left medium-text mobile-text-center']//text()").get()
-
         office = divs.xpath("//a[@data-type='Office']/text()").get()
         cell = divs.xpath("//a[@data-type='Agent']/text()").get()
         email = divs.xpath("//div[@class='text-left medium-text mobile-text-center']/a[@class='agent_email']/@href").get()
-
         fb = divs.xpath("//div[@class='agent-social-icons social']/a[@class='fb']/@href").get()
         tw = divs.xpath("//div[@class='agent-social-icons social']/a[@class='tw']/@href").get()
         li = divs.xpath("//div[@class='agent-social-icons social']/a[@class='li']/@href").get()
         yt = divs.xpath("//div[@class='agent-social-icons social']/a[@class='yt']/@href").get()
         pi = divs.xpath("//div[@class='agent-social-icons social']/a[@class='pi']/@href").get()
         ig = divs.xpath("//div[@class='agent-social-icons social']/a[@class='ig']/@href").get()
-
         offices = divs.xpath("//div[@id='team_offices']/a/text()").extract()
         languages = divs.xpath("//div[@class='language-list']/ul/li/text()").extract()
         description = response.xpath("//div[@class='col-sm-24']//following-sibling::p//text()").get()
@@ -59,7 +56,6 @@ def parse_details(self, response):
                 'youtube': yt,
                 'pinterest': pi,
                 'instagram': ig
-
             },
             'offices': offices,
             'languages': languages,
