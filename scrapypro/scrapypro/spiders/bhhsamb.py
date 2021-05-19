@@ -1,6 +1,4 @@
 import scrapy
-from bs4 import BeautifulSoup as bs
-
 
 
 class BhhsambSpider(scrapy.Spider):
@@ -24,9 +22,10 @@ class BhhsambSpider(scrapy.Spider):
         name = divs.xpath("//div[@class='row']/h1/text()").get()
         job_title = divs.xpath("//div[@class='text-left medium-text mobile-text-center']/span[@class='big-text']/text()").get()
         image_url = divs.xpath("//img[@class='agent-photo']/@src").get()
-        address = divs.xpath("//div[@class='row']/div[@class='text-left medium-text mobile-text-center']//text()").get()
+        address = divs.xpath("//div[@class='row']/div[@class='text-left medium-text mobile-text-center']//text()").get() + divs.xpath(".//br/following::text()").get()
         office = divs.xpath("//a[@data-type='Office']/text()").get()
         cell = divs.xpath("//a[@data-type='Agent']/text()").get()
+        fax = divs.xpath(".//span[@class='agent-contact-full-prefix'][3]//following::text()").get()
         email = divs.xpath("//div[@class='text-left medium-text mobile-text-center']/a[@class='agent_email']/@href").get()
         fb = divs.xpath("//div[@class='agent-social-icons social']/a[@class='fb']/@href").get()
         tw = divs.xpath("//div[@class='agent-social-icons social']/a[@class='tw']/@href").get()
@@ -45,9 +44,10 @@ class BhhsambSpider(scrapy.Spider):
             'image_url': image_url,
             'address': address,
             'contact_details': {
-                'office': office,
-                'cell': cell,
-                'email': email
+                'Office': office,
+                'Cell': cell,
+                'Fax':fax,
+                'Email': email
             },
             'social_contact': {
                 'facebook': fb,
