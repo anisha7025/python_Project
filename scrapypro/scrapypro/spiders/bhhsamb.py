@@ -22,7 +22,8 @@ class BhhsambSpider(scrapy.Spider):
         name = divs.xpath("//div[@class='row']/h1/text()").get()
         job_title = divs.xpath("//div[@class='text-left medium-text mobile-text-center']/span[@class='big-text']/text()").get()
         image_url = divs.xpath("//img[@class='agent-photo']/@src").get()
-        address = divs.xpath("//div[@class='row']/div[@class='text-left medium-text mobile-text-center']//text()").get() + divs.xpath(".//br/following::text()").get()
+        address = divs.xpath(".//br/preceding-sibling::text()").get()+divs.xpath(".//br/following::text()").get() +\
+                 divs.xpath("//div[@class='bumper clear-both']//following::text()").get()
         office = divs.xpath("//a[@data-type='Office']/text()").get()
         cell = divs.xpath("//a[@data-type='Agent']/text()").get()
         fax = divs.xpath(".//span[@class='agent-contact-full-prefix'][3]//following::text()").get()
