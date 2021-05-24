@@ -7,14 +7,21 @@ class BhhsambSpider(scrapy.Spider):
     start_urls = ['http://bhhsamb.com/agents/']
     page_number = 2
 
+
+#  Crawling
     def parse(self, response):
         all_links = response.xpath("//div[@class='col-md-8 col-sm-12']")
         for link in all_links:
             url = link.xpath(".//div[@class='agent-info']/span/a/@href").get()
-            # print(self.start_urls[0]+url[8:])
             yield scrapy.Request(self.start_urls[0] + url[8:], callback=self.parse_details)
 
+        new_page = 'https://www.bhhsamb.com/agents?page=' + str(BhhsambSpider.page_number)
+        if BhhsambSpider.page_number < 43:
+            BhhsambSpider.page_number += 1
+            yield response.follow(new_page, callback=self.parse)
 
+
+#  Parsing
     def parse_details(self, response):
 
         divs = response.xpath("//div[@class='agent-details col-sm-24 kill-padding']")
@@ -64,7 +71,4 @@ class BhhsambSpider(scrapy.Spider):
         }
 
 
-        new_page = 'https://www.bhhsamb.com/agents?page=' + str(BhhsambSpider.page_number)
-        if BhhsambSpider.page_number < 43:
-            BhhsambSpider.page_number += 1
-            yield response.follow(new_page, callback=self.parse)
+
